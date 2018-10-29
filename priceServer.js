@@ -15,12 +15,16 @@ server.listen(8080, function(){
 
 
 */
+
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 var result;
 
 var express = require('express');
 var app= express();
+
+app.use("/script",express.static(__dirname + "/script"))
+
 app.listen(8080,function(){
 	console.log("start");
 });
@@ -34,7 +38,7 @@ app.post('/getPriceData',function(request,response){
 	MongoClient.connect(url,function(err,db){
 	if(err) throw err;
 	
-	var dbo= db.db("price");
+	var dbo = db.db("price");
 
 		dbo.collection("price").find().toArray(function(err,databaseResult){
 			if (err) throw err;
