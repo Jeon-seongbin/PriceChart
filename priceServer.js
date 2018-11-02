@@ -13,7 +13,6 @@ server.listen(8080, function(){
     console.log('Server is running...');
 });
 
-
 */
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
@@ -41,13 +40,17 @@ io.listen(server);
 
 io.on('connection',function(socket){
 	console.log('user Connected');
+
 	socket.on('chat message', function(msg){
 		console.log("message : " + msg);
-	})
+		io.emit('chat message' , msg);
+	});
 
 	socket.on('disconnect',function(){
 		console.log("user disconnect");	
-	})
+	});
+
+
 });
 
 app.post('/getPriceData',function(request,response){
