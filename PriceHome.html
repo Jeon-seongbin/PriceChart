@@ -12,19 +12,21 @@
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+        
     </head>
     <body>
         <header id="header" class="chart">
             <canvas id="myChart" class="myChart"></canvas>
         </header>
+
+        <form action="">
+            <input type="text" id="message" size="100">
+            <input type="submit" value="send" id="btn">
+        </form>
         
-
-        <input type="text" name="message">
-        <input type="button" value="send" id="submit">
-
-        <script src="./script/chartModel.js"></script>
+     <script src="./script/chartModel.js"></script>
+    
     </body>
-
     <!-- chart js-->
 </html>

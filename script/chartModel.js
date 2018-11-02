@@ -1,3 +1,5 @@
+var socket = io.connect("http://127.0.0.1:8080");
+
 var priceChart = document.getElementById("myChart");
 var priceChart = document.getElementById("myChart").getContext("2d"); 
 
@@ -61,5 +63,11 @@ $(document).ready(function(){
               //    alert(data);
             }
         });
-     },2000);
+     },5000);
+
+    $('form').submit(function(){
+        socket.emit('chat message', $('#message').val());
+        $('#message').val('');
+        return false;
+    });
 });

@@ -15,22 +15,39 @@ server.listen(8080, function(){
 
 
 */
-
 var MongoClient = require('mongodb').MongoClient;
 var url = "mongodb://localhost:27017/";
 var result;
 
 var express = require('express');
-var app= express();
+var app = express();
+
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+const PORT = 8080;
 
 app.use("/script",express.static(__dirname + "/script"))
 
-app.listen(8080,function(){
-	console.log("start");
+var server = app.listen(PORT,function(){
+	console.log("start in " + PORT + " port ");
 });
 
 app.get('/',function(request,response){
 	response.sendFile('priceHome.html', { root: '.' })
+});
+
+io.listen(server);
+
+io.on('connection',function(socket){
+	console.log('user Connected');
+	socket.on('chat message', function(msg){
+		console.log("message : " + msg);
+	})
+
+	socket.on('disconnect',function(){
+		console.log("user disconnect");	
+	})
 });
 
 app.post('/getPriceData',function(request,response){
@@ -42,14 +59,11 @@ app.post('/getPriceData',function(request,response){
 
 		dbo.collection("price").find().toArray(function(err,databaseResult){
 			if (err) throw err;
-		    console.log(databaseResult);
-
+	//	    console.log(databaseResult);
 		    result = databaseResult;
-
-
 		    db.close();
 		})
 	})
-		    console.log(result);
+	//	    console.log(result);
 	response.json(result);
 })
