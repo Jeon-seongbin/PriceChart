@@ -9,7 +9,7 @@ https://github.com/hikaru7719/chat_app
 issue 2. mongoose find({}) doesnt return mongodb data<br>
 https://stackoverflow.com/questions/18628656/model-find-returns-empty-in-mongoose
 
-課題管理
+課題管理 (2018/11/6)
 1. 홈페이지 UI 개선
  - 밑 부분은 채팅
  - 윗 부분은 챠트
