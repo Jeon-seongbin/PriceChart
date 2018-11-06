@@ -1,32 +1,24 @@
 var express = require('express');
 var router = express.Router();
+//import mongoose
+var mongoose = require('mongoose');
 
-const MongoClient = require('mongodb').MongoClient;
-const mongodbURL = 'mongodb://localhost:27017/';
-
-var ret;
+var price = mongoose.model('price');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index');
 });
 
-router.post('/getPriceData', function(req,res,next){
-  	MongoClient.connect(mongodbURL, function (err, client) {
-	  if (err){
-	    throw err
-	  }else{
-	    console.log('mongod connected');
-	  }
-	  const db = client.db('price');
-	  db.collection('price').find().toArray(function (err, result) {
-	    if (err) throw err
-		ret = result;
-		client.close();
-	  });
-	});
-    console.log(ret);
-	res.json(ret);
-});
+router.post('/getPriceData', function(req,res,resi){
 
+	var query = price.find({});
+	query.exec(function(err, price) {
+  
+         // Method to construct the json result set
+         console.log(price);
+         res.json(price);
+  
+  });
+});
 module.exports = router;
