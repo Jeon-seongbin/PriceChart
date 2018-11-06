@@ -26,3 +26,7 @@ https://stackoverflow.com/questions/18628656/model-find-returns-empty-in-mongoos
 
 4. 크롤링 추가
  - 일단 해보고 만만한 곳으로 (빗썸이 API도 있고 쉬워보임)
+
+5. 기능개선
+ - 데이터가 없을 시 (전체데이터)
+ - 데이터가 존재 할 시 (마지막) 데이터만 가져올것
