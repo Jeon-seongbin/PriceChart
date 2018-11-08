@@ -9,11 +9,16 @@ https://github.com/hikaru7719/chat_app
 issue 2. mongoose find({}) doesnt return mongodb data<br>
 https://stackoverflow.com/questions/18628656/model-find-returns-empty-in-mongoose
 
-課題管理 (2018/11/6)
+issue 3. 서버가 다운되어있고 다시 클라이언트 단에서 리퀘스트를 보낼 때
+
+flag 이용 널체크 chartJs > convertJs 교환
+
+課題管理 (2018/11/8)
 1. 홈페이지 UI 개선
  - 밑 부분은 채팅
  - 윗 부분은 챠트
  - 부트스트랩 이용
+ - 서버가 다운되었을때 서버 다운이라는 문자(혹은 그림) 보여 줄 것
 
 2. 홈페이지 jQuery 개선
  - Vue js 아니면 React js 아니면  TypeScript
@@ -28,5 +33,5 @@ https://stackoverflow.com/questions/18628656/model-find-returns-empty-in-mongoos
  - 일단 해보고 만만한 곳으로 (빗썸이 API도 있고 쉬워보임)
 
 5. 기능개선
- - 데이터가 없을 시 (전체데이터)
- - 데이터가 존재 할 시 (마지막) 데이터만 가져올것
+ - 서버가 다운되었을때 자바스크립트단에서 리퀘스트 보내지 말 것
+ 
