@@ -37,7 +37,8 @@ server.on('listening', onListening);
  * socket io setting
  */
 io.on('connection',function(socket){
-  console.log('a user connected');
+ console.log('a user connected');
+  socket.emit('serverStatus',0);
 
   socket.on('chat message',function(msg){
     io.emit('chat message', msg);

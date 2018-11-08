@@ -50,7 +50,6 @@ router.post('/getPriceData',jsonParser, function(req,res,result){
 		        res.json(priceData);
 			});
 		}
-		
 	}
 });
 module.exports = router;
