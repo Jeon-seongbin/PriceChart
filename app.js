@@ -13,6 +13,11 @@ var mongoose = require('mongoose');
 var db = require('./project_modules/mongoModule.js');
 
 /**
+ * use body-parser
+ */
+var bodyParser = require('body-parser');
+
+/**
  * use controller
  */
 var indexRouter = require('./routes/index');
@@ -30,6 +35,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
 /**
  * use javascript

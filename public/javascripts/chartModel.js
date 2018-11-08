@@ -1,80 +1,95 @@
 const PORT = 3000;
 var socket = io.connect("http://127.0.0.1:"+ PORT);
 
-var priceChart = document.getElementById("myChart");
-var priceChart = document.getElementById("myChart").getContext("2d"); 
-
-var chartData = [];
-var chartTime = [];
+var dataPointsInfo = [];
+var flag = 0;
 
 function pricedataParser(json){
-    for (var length = 0; length < Object.keys(json).length; length++) {
-        if(json[length].exchange === "coincheck"){
-            chartData.push(json[length].price);
-            chartTime.push(json[length].time)
+
+    var count = Object.keys(json).length;
+
+    console.log("dataPointsInfo ",json[0].time);
+
+    for (var length = 0; length < count; length++) {
+        if(json[length].exchange === "coincheck"){  
+
+            dataPointsInfo.push({x :new Date( json[length].time), y : json[length].price});
+            console.log("dataPointsInfo ",{x : json[length].time , y : json[length].price});
         }
     }
 }
 
+var titleData = { text: " Chart"};
+var axisYData = {
+        title: " Price",
+        valueFormatString: "#0,000",
+        //suffix: "1000",
+        prefix: "¥"
+    };
+
+var chartData =  [{
+        type: "area",
+        color: "rgba(54,158,173,.7)",
+        markerSize: 0,
+        xValueFormatString: "HH:MM",
+        yValueFormatString: "$#,##0.##",
+        dataPoints : dataPointsInfo
+        }];
+
+var chart = new CanvasJS.Chart("chartContainer", {
+    animationEnabled: true,  
+    title : titleData,
+    axisY: axisYData,
+    data: chartData
+    });
+
 $(document).ready(function(){
-
+    if(chart != null){
+        chart.render();
+    }
+ 
     setInterval(function(){
-
+        
          $.ajax({
             //url:"localhost:8080/getPriceData",
             url:"/getPriceData",
-
+            data : {"flag":flag},
             type: 'POST',
             dataType:'json',
             success : function(data){
-                chartData = [];
-                chartTime = [];
+
+                if(chart == null){
+                    chart = new CanvasJS.Chart("chartContainer", {
+                    animationEnabled: true,  
+                    title : titleData,
+                    axisY: axisYData,
+                    data: chartData
+                    });
+                }
                 console.log("success",data);
                 pricedataParser(data);
+                flag = 1;
+                chart.render();
 
-                var priceChart = document.getElementById("myChart");
-                var myChart = new Chart(priceChart, {
-                    type: 'line',
-                    data: {
-                        labels: chartTime,
-                        datasets: [{
-                            label: 'Coin chart',
-                            data: chartData,
-                            backgroundColor: [
-                                'rgba(255, 99, 132, 0.2)',
-                            ],
-                            borderColor: [
-                                'rgba(255,99,132,1)',
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero:true
-                                }
-                            }]
-                        }
-                    }
-                });
             },
            error: function( data ) {
-                console.log("fail");
-              //    alert(data);
+                flag = 2;
+                console.log("fail",flag);
+                if( chart != null ){
+                    chart.destroy();
+                    chart = null;
+                    dataPointsInfo = [];
+                }
             }
         });
-     },1000);
+     },1*1000);
 
     $('form').submit(function(){
         socket.emit('chat message', $('#message').val());
         $('#message').val('');
         return false;
     });
-
     socket.on('chat message', function(msg){
       $('#messages').append($('<li>').text(msg));
     });
-
 });

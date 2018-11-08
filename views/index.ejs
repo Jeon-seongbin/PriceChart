@@ -8,22 +8,26 @@
         <title>Price</title>
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+
         <!-- Styles -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+
     </head>
     <body>
         <header id="header" class="chart">
-            <canvas id="myChart" class="myChart"></canvas>
+            <div id="chartContainer" style="height: 300px; width: 100%;"></div>
         </header>
-        <form action="">
+        <form action="" class="bg-chat">
             <ul id="messages">
             </ul>
             <input type="text" id="message" size="100">
             <input type="submit" value="send" id="btn">
         </form>
-     <script src="public/javascripts/chartModel.js"></script>
+        
+        <script src="public/javascripts/canvasjs.min.js"></script>
+        <script src="public/javascripts/chartModel.js"></script>
     </body>
     <!-- chart js-->
 </html>
