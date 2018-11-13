@@ -16,14 +16,15 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/getPriceData',jsonParser, function(req,res,result){
-	
+
 	console.log(req.body.flag);
 
 	var flag = req.body.flag;
-
+	var exchangeWhere = req.body.exchange;
+	console.log(exchangeWhere)
 	if(flag == 0){
 		//first connection
-		var query = price.find({});
+		var query = price.find({}).where('exchange',exchangeWhere);
 		query.exec(function(err, price) {
 	        priceData = price;
 	    	res.header("Access-Control-Allow-Origin", "*");
@@ -31,8 +32,7 @@ router.post('/getPriceData',jsonParser, function(req,res,result){
 		});
 	}else if(flag == 1){
 		//over first connection
-
-		var query = price.find({}).sort({time:-1}).limit(1);
+		var query = price.find().where('exchange',exchangeWhere).sort({time:-1}).limit(1);
 		query.exec(function(err, price) {
 
 	        console.log(price);
@@ -40,9 +40,10 @@ router.post('/getPriceData',jsonParser, function(req,res,result){
 	        res.json(price);
 		});
 	}else{
+		//when disconnected
 		console.log(priceData);
 		if(priceData == null){
-			var query = price.find({});
+			var query = price.find({exchangeWhere}).where('exchange',exchangeWhere);
 			query.exec(function(err, price) {
 		        priceData = price;
 		    	res.header("Access-Control-Allow-Origin", "*");

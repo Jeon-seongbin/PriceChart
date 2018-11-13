@@ -3,60 +3,62 @@ var socket = io.connect("http://127.0.0.1:"+ PORT);
 
 var dataPointsInfo = [];
 var flag = 0;
+var exchange = "coincheck";
+var moneyMark = "¥";
+var exchangeValue = "Coincheck(JP)";
+var intervalOption;
 
 function pricedataParser(json){
-
     var count = Object.keys(json).length;
     console.log("dataPointsInfo ",json[0].time);
 
     for (var length = 0; length < count; length++) {
-        if(json[length].exchange === "coincheck"){  
-
-            dataPointsInfo.push({x :new Date( json[length].time), y : json[length].price});
-            console.log("dataPointsInfo ",{x : json[length].time , y : json[length].price});
-        }
+        dataPointsInfo.push({x :new Date( json[length].time), y : json[length].price});
+        console.log("dataPointsInfo ", {x : json[length].time , y : json[length].price});
     }
 }
 
-var titleData = { text: "Bitcoin Chart"};
-var axisYData = {
-    title: " Price",
-    valueFormatString: "#0,000",
-    //suffix: "1000",
-    prefix: "¥"
-};
-
-var chartData =  [{
-    type: "area",
-    color: "rgba(54,158,173,.7)",
-    markerSize: 0,
-    xValueFormatString: "HH:MM",
-    yValueFormatString: "$#,##0.##",
-    dataPoints : dataPointsInfo
-    }];
-
 var chart = new CanvasJS.Chart("chartContainer", {
     animationEnabled: true,  
-    title : titleData,
-    axisY: axisYData,
-    data: chartData
+    title :  { text:exchangeValue+ " Bitcoin Chart"},
+    axisY: {
+        valueFormatString: "#0,000",
+        prefix: moneyMark
+    },
+    data: [{
+        type: "area",
+        color: "rgba(54,158,173,.7)",
+        markerSize: 0,
+        xValueFormatString: "HH:MM",
+        yValueFormatString: moneyMark + "#,##0.##",
+        dataPoints : dataPointsInfo
+        }]
     });
 
 function requestInterval(){
     $.ajax({
         //url:"localhost:8080/getPriceData",
         url:"/getPriceData",
-        data : {"flag" : flag},
+        data : { "flag" : flag , "exchange" : exchange },
         type: 'POST',
         dataType:'json',
         success : function(data){
-
             if(chart == null){
                 chart = new CanvasJS.Chart("chartContainer", {
                 animationEnabled: true,  
-                title : titleData,
-                axisY: axisYData,
-                data: chartData
+                title : { text: exchangeValue + " Bitcoin Chart"},
+                axisY: {
+                    valueFormatString: "#0,000",
+                    prefix: moneyMark
+                },
+                data: [{
+                    type: "area",
+                    color: "rgba(54,158,173,.7)",
+                    markerSize: 0,
+                    xValueFormatString: "HH:MM",
+                    yValueFormatString: moneyMark + "#,##0.##",
+                    dataPoints : dataPointsInfo
+                    }]
                 });
             }
 
@@ -69,16 +71,18 @@ function requestInterval(){
             flag = 2;
             console.log("fail",flag);
             if( chart != null ){
-                chart.destroy();
-                chart = null;
-                dataPointsInfo = [];
+                chartReset();
                 clearInterval(intervalOption);
             }
         }
     });
  }
 
- var intervalOption;
+function chartReset(){
+    chart.destroy();
+    chart = null;
+    dataPointsInfo = [];
+}
 
 $(document).ready(function(){
     if(chart != null){
@@ -99,5 +103,25 @@ $(document).ready(function(){
 
     socket.on('chat message', function(msg){
       $('#messages').append($('<li>').text(msg));
+    });
+
+    $("input#exchangeBtn").click(function(){
+        
+        if(exchangeValue == this.value){
+            return;
+        }
+        exchangeValue = this.value;
+
+        if(exchangeValue === "Coincheck(JP)"){
+            exchange = "coincheck";
+            moneyMark = "¥"
+        }else if(exchangeValue ==="Bithumb(KR)"){
+            exchange = "bithumb";
+            moneyMark = "₩"
+        }
+
+        flag = 0;
+        chartReset();
+        requestInterval();
     });
 });
