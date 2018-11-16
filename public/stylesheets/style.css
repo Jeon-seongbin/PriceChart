@@ -1,6 +1,9 @@
-
+.chartContainer{
+	height: 300px;
+	width: 100%;
+}
 .chat-history {
-  height:480px;
-  width: 100%;
-  overflow-y: scroll;
+	height:480px;
+	width: 100%;
+	overflow-y: scroll;
 }

@@ -67,7 +67,7 @@ function requestInterval(){
             flag = 1;
             chart.render();
         },
-        error: function( data ) {
+        error: function(data) {
             flag = 2;
             console.log("fail",flag);
             if( chart != null ){
@@ -116,7 +116,6 @@ $(document).ready(function(){
         if(exchangeValue == this.value){
             return;
         }
-
         exchangeValue = this.value;
 
         if(exchangeValue === "Coincheck(JP)"){
