@@ -88,7 +88,7 @@ $(document).ready(function(){
     if(chart != null){
         chart.render();
     }
- 
+
     socket.on('serverStatus',function(serverStatusFlag){
         console.log(serverStatusFlag)
         flag = serverStatusFlag;
@@ -96,20 +96,27 @@ $(document).ready(function(){
     });
 
     $('form').submit(function(){
-        socket.emit('chat message', $('#message').val());
+        var message = $('#message').val();
+        if(message == ''){
+            return false;
+        }
+        socket.emit('chat message', message);
         $('#message').val('');
+        
         return false;
     });
 
     socket.on('chat message', function(msg){
-      $('#messages').append($('<li>').text(msg));
+        $('#messages').append($('<li class="list-group-item">').text(msg));
+        document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
     });
 
     $("input#exchangeBtn").click(function(){
-        
+
         if(exchangeValue == this.value){
             return;
         }
+
         exchangeValue = this.value;
 
         if(exchangeValue === "Coincheck(JP)"){

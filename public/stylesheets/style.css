@@ -1,20 +1,6 @@
-body,html {
-	height : 100%;
-}
 
-.bg-chart, .bg-chat{
-	position: relative;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-}
-.bg-chart{
-	height: 35%;
-}
-.bg-chat{
-	height: 65%;
-}
-
-a {
-  color: #00B7FF;
+.chat-history {
+  height:480px;
+  width: 100%;
+  overflow-y: scroll;
 }

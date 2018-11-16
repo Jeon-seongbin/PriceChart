@@ -6,31 +6,54 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Price</title>
-        <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"/>
+        <link 
+            rel="stylesheet" 
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" 
+            integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" 
+            crossorigin="anonymous">
 
-        <!-- Styles -->
+        <link rel="stylesheet" href="public/stylesheets/style.css" type="text/css"/>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-
     </head>
     <body>
-        <header id="header" class="chart">
+        <div class="container-fluid">
+             <header id="header" class="chart">
             <div id="chartContainer" style="height: 300px; width: 100%;"></div>
         </header>
         <form action="" class="bg-chat">
-            <input type="button" value="Coincheck(JP)" id="exchangeBtn"/>
-            <input type="button" value="Bithumb(KR)" id="exchangeBtn"/>
-
-            <ul id="messages">
-            </ul>
-            <input type="text" id="message" size="100">
-            <input type="submit" value="send" id="btn">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="btn-group" role="group">
+                        <input type="button" value="Coincheck(JP)" id="exchangeBtn" class="btn btn-outline-info"/> 
+                        <input type="button" value="Bithumb(KR)" id="exchangeBtn" class="btn btn-outline-info"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="font-weight-light">
+                        Chatting
+                    </div>
+                </div>
+                <div class="row" id="messageBox">
+                    <ul class="list-group list-group-flush chat-history" id="messages">
+                    </ul>
+                </div>
+                <div class="row">
+                    <div class="input-group mb-12">
+                        <div class="input-group-prepend">
+                            <button type="button" class="btn btn-light">Light</button>
+                        </div>
+                        <input type="text" class="form-control" id="message"  placeholder="your message">
+                        <button class="btn btn-primary" role="group" type="submit">send</button>
+                    </div>
+                </div>
+            </div>
         </form>
-        
         <script src="public/javascripts/canvasjs.min.js"></script>
         <script src="public/javascripts/chartModel.js"></script>
+        </div>
     </body>
     <!-- chart js-->
 </html>
