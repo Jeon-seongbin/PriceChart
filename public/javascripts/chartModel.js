@@ -18,8 +18,6 @@ const r = Math.floor(Math.random() * (max - min)) + min;
 const g = Math.floor(Math.random() * (max - min)) + min;
 const b = Math.floor(Math.random() * (max - min)) + min;
 
-
-
 function pricedataParser(json){
     var count = Object.keys(json).length;
     console.log("dataPointsInfo ",json[0].time);
@@ -100,8 +98,6 @@ function scrollEvent(){
     scrollFlag = false;
 }
 
-
-
 $(document).ready(function(){
     document.getElementById("userId").innerHTML = userId;
     
@@ -116,20 +112,22 @@ $(document).ready(function(){
         focus : true
     });
 
-
     $("#inputId").on('shown.bs.modal', function (e) {
         $("#userInputId").focus();
     });
 
     $("#changeId").on('shown.bs.modal', function (e) {
+       $("#message").val("");
         $("#userChangeId").focus();
     });
 
     $("#inputId").on("hidden.bs.modal", function(e){
+        $("#userInputId").val("");
         $("#message").focus();
     });
 
     $("#changeId").on("hidden.bs.modal", function(e){
+        $("#userChangeId").val("");
         $("#message").focus();
     });
 
@@ -138,7 +136,14 @@ $(document).ready(function(){
         if(userId != ""){
             $("#changeId").modal('hide');
             document.getElementById("userId").innerHTML = userId;
-            $("#userChangeId").val("");
+        }
+    });
+
+    $("#inputIdBtn").click(function(){
+        userId = $("#userInputId").val();
+        if(userId != ""){
+            $("#inputId").modal('hide');
+            document.getElementById("userId").innerHTML = userId;
         }
     });
 
@@ -148,17 +153,7 @@ $(document).ready(function(){
             if(userId != ""){
                 $("#changeId").modal('hide');
                 document.getElementById("userId").innerHTML = userId;
-                $("#userChangeId").val("");
             }
-        }
-    });
-
-    $("#inputIdBtn").click(function(){
-        userId = $("#userInputId").val();
-        if(userId != ""){
-            $("#inputId").modal('hide');
-            document.getElementById("userId").innerHTML = userId;
-            $("#userInputId").val("");
         }
     });
 
@@ -168,7 +163,6 @@ $(document).ready(function(){
             if(userId != ""){
                 $("#inputId").modal('hide');
                 document.getElementById("userId").innerHTML = userId;
-                $("#userInputId").val("");
             }
         }
     });
