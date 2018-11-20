@@ -7,6 +7,7 @@ var exchange = "coincheck";
 var moneyMark = "¥";
 var exchangeValue = "Coincheck(JP)";
 var intervalOption;
+var scrollFlag = true;
 
 function pricedataParser(json){
     var count = Object.keys(json).length;
@@ -76,12 +77,16 @@ function requestInterval(){
             }
         }
     });
- }
+}
 
 function chartReset(){
     chart.destroy();
     chart = null;
     dataPointsInfo = [];
+}
+
+function scrollEvent(){
+    scrollFlag = false;
 }
 
 $(document).ready(function(){
@@ -102,13 +107,16 @@ $(document).ready(function(){
         }
         socket.emit('chat message', message);
         $('#message').val('');
-        
+        scrollFlag = true;
         return false;
     });
 
     socket.on('chat message', function(msg){
         $('#messages').append($('<li class="list-group-item">').text(msg));
-        document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
+        if(scrollFlag){
+           document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
+        }
+ 
     });
 
     $("input#exchangeBtn").click(function(){
@@ -130,4 +138,5 @@ $(document).ready(function(){
         chartReset();
         requestInterval();
     });
+
 });
