@@ -2,8 +2,17 @@
 	height: 300px;
 	width: 100%;
 }
+
 .chat-history {
-	height:480px;
+	height:550px;
 	width: 100%;
 	overflow-y: scroll;
+}
+
+.modal-dialog{
+    -webkit-transform: translate(0,-50%);
+    -o-transform: translate(0,-50%);
+    transform: translate(0,-50%);
+    top: 50%;
+    margin: 0 auto;
 }

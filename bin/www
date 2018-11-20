@@ -38,6 +38,7 @@ server.on('listening', onListening);
  * socket io setting
  */
 io.on('connection',function(socket){
+
  console.log('a user connected');
   socket.emit('serverStatus',0);
 

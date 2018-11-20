@@ -8,6 +8,17 @@ var moneyMark = "¥";
 var exchangeValue = "Coincheck(JP)";
 var intervalOption;
 var scrollFlag = true;
+var userId = "input your ID";
+var anotherUserId = "";
+
+const max = 255;
+const min = 1;
+
+const r = Math.floor(Math.random() * (max - min)) + min; 
+const g = Math.floor(Math.random() * (max - min)) + min;
+const b = Math.floor(Math.random() * (max - min)) + min;
+
+
 
 function pricedataParser(json){
     var count = Object.keys(json).length;
@@ -21,14 +32,14 @@ function pricedataParser(json){
 
 var chart = new CanvasJS.Chart("chartContainer", {
     animationEnabled: true,  
-    title :  { text:exchangeValue+ " Bitcoin Chart"},
+    title :  { text:exchangeValue + " Bitcoin Chart"},
     axisY: {
         valueFormatString: "#0,000",
         prefix: moneyMark
     },
     data: [{
         type: "area",
-        color: "rgba(54,158,173,.7)",
+        color: "rgba("+r+","+g+","+b+",.7)",
         markerSize: 0,
         xValueFormatString: "HH:MM",
         yValueFormatString: moneyMark + "#,##0.##",
@@ -54,7 +65,7 @@ function requestInterval(){
                 },
                 data: [{
                     type: "area",
-                    color: "rgba(54,158,173,.7)",
+                    color: "rgba("+r+","+g+","+b+",.7)",
                     markerSize: 0,
                     xValueFormatString: "HH:MM",
                     yValueFormatString: moneyMark + "#,##0.##",
@@ -89,10 +100,78 @@ function scrollEvent(){
     scrollFlag = false;
 }
 
+
+
 $(document).ready(function(){
+    document.getElementById("userId").innerHTML = userId;
+    
     if(chart != null){
         chart.render();
     }
+    
+    $("#inputId").modal({
+        backdrop: false,
+        keyboard:false,
+        show:true,
+        focus : true
+    });
+
+
+    $("#inputId").on('shown.bs.modal', function (e) {
+        $("#userInputId").focus();
+    });
+
+    $("#changeId").on('shown.bs.modal', function (e) {
+        $("#userChangeId").focus();
+    });
+
+    $("#inputId").on("hidden.bs.modal", function(e){
+        $("#message").focus();
+    });
+
+    $("#changeId").on("hidden.bs.modal", function(e){
+        $("#message").focus();
+    });
+
+    $("#changeIdbtn").click(function(){
+        userId = $("#userChangeId").val();
+        if(userId != ""){
+            $("#changeId").modal('hide');
+            document.getElementById("userId").innerHTML = userId;
+            $("#userChangeId").val("");
+        }
+    });
+
+    $("#changeId").on("keydown",function(e){
+        if(e.which == 13) {
+           userId = $("#userChangeId").val();
+            if(userId != ""){
+                $("#changeId").modal('hide');
+                document.getElementById("userId").innerHTML = userId;
+                $("#userChangeId").val("");
+            }
+        }
+    });
+
+    $("#inputIdBtn").click(function(){
+        userId = $("#userInputId").val();
+        if(userId != ""){
+            $("#inputId").modal('hide');
+            document.getElementById("userId").innerHTML = userId;
+            $("#userInputId").val("");
+        }
+    });
+
+    $("#inputId").on("keydown",function(e){
+        if(e.which == 13) {
+            userId = $("#userInputId").val();
+            if(userId != ""){
+                $("#inputId").modal('hide');
+                document.getElementById("userId").innerHTML = userId;
+                $("#userInputId").val("");
+            }
+        }
+    });
 
     socket.on('serverStatus',function(serverStatusFlag){
         console.log(serverStatusFlag)
@@ -101,31 +180,35 @@ $(document).ready(function(){
     });
 
     $('form').submit(function(){
-        var message = $('#message').val();
+        var message = $("#message").val();
         if(message == ''){
             return false;
         }
-        socket.emit('chat message', message);
+
+        var messageBox = {"message" : message, "userId" : userId};
+
+        socket.emit("chat message", messageBox);
+
         $('#message').val('');
         scrollFlag = true;
         return false;
     });
 
     socket.on('chat message', function(msg){
-        $('#messages').append($('<li class="list-group-item">').text(msg));
+        
+        var msg = JSON.parse(JSON.stringify(msg));
+
+        $('#messages').append($('<li class="list-group-item"><span>'+msg["userId"]+'</span> '+msg["message"]+'</li>'));
         if(scrollFlag){
            document.getElementById("messages").scrollTop = document.getElementById("messages").scrollHeight;
         }
- 
     });
 
     $("input#exchangeBtn").click(function(){
-
         if(exchangeValue == this.value){
             return;
         }
         exchangeValue = this.value;
-
         if(exchangeValue === "Coincheck(JP)"){
             exchange = "coincheck";
             moneyMark = "¥"
@@ -138,5 +221,4 @@ $(document).ready(function(){
         chartReset();
         requestInterval();
     });
-
 });
